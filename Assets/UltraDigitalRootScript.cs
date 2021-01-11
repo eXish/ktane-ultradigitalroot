@@ -175,7 +175,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
                 if (bomb.IsPortPresent(Port.PS2)) step1Binary += "1"; else step1Binary += "0";
                 break;
             case 2:
-                if (bomb.GetSerialNumber().EqualsAny('0', '2', '4', '6', '8')) step1Binary += "1"; else step1Binary += "0";
+                if (ContainsAny(bomb.GetSerialNumber(), new char[] { '0', '2', '4', '6', '8' })) step1Binary += "1"; else step1Binary += "0";
                 if (bomb.IsIndicatorPresent("CAR")) step1Binary += "1"; else step1Binary += "0";
                 if (bomb.GetBatteryCount() % 2 == 0) step1Binary += "1"; else step1Binary += "0";
                 if (bomb.IsPortPresent(Port.CompositeVideo)) step1Binary += "1"; else step1Binary += "0";
@@ -187,7 +187,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
                 if (bomb.GetBatteryCount() % 2 == 1) step1Binary += "1"; else step1Binary += "0";
                 break;
             case 4:
-                if (bomb.GetSerialNumber().EqualsAny('A', 'E', 'I', 'O', 'U')) step1Binary += "1"; else step1Binary += "0";
+                if (ContainsAny(bomb.GetSerialNumber(), new char[] { 'A', 'E', 'I', 'O', 'U' })) step1Binary += "1"; else step1Binary += "0";
                 if (IsTimeOfDayPresent()) step1Binary += "1"; else step1Binary += "0";
                 if (bomb.IsIndicatorPresent("MSA")) step1Binary += "1"; else step1Binary += "0";
                 if (bomb.GetBatteryCount(Battery.AA) > 0) step1Binary += "1"; else step1Binary += "0";
@@ -199,7 +199,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
                 if (IsNumberedIndicatorPresent()) step1Binary += "1"; else step1Binary += "0";
                 break;
             case 6:
-                if (bomb.GetSerialNumber().EqualsAny('B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z')) step1Binary += "1"; else step1Binary += "0";
+                if (ContainsAny(bomb.GetSerialNumber(), new char[] { 'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z' })) step1Binary += "1"; else step1Binary += "0";
                 if (bomb.IsIndicatorPresent("SIG")) step1Binary += "1"; else step1Binary += "0";
                 if (bomb.IsPortPresent(Port.StereoRCA)) step1Binary += "1"; else step1Binary += "0";
                 if (bomb.IsPortPresent(Port.VGA)) step1Binary += "1"; else step1Binary += "0";
@@ -208,7 +208,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
                 if (bomb.IsPortPresent(Port.HDMI)) step1Binary += "1"; else step1Binary += "0";
                 if (bomb.GetBatteryHolderCount() % 2 == 0) step1Binary += "1"; else step1Binary += "0";
                 if (bomb.IsIndicatorPresent("IND")) step1Binary += "1"; else step1Binary += "0";
-                if (bomb.GetSerialNumber().EqualsAny('1', '3', '5', '7', '9')) step1Binary += "1"; else step1Binary += "0";
+                if (ContainsAny(bomb.GetSerialNumber(), new char[] { '1', '3', '5', '7', '9' })) step1Binary += "1"; else step1Binary += "0";
                 break;
             case 8:
                 if (bomb.IsPortPresent(Port.PCMCIA)) step1Binary += "1"; else step1Binary += "0";
@@ -294,6 +294,17 @@ public class UltraDigitalRootScript : MonoBehaviour {
         Debug.LogFormat("[Ultra Digital Root #{0}] Sum's multiplicative digital root ({1}) + sum's multiplicative persistence ({2}) is: {3}", moduleId, MultiRoot(step3Sum, false), MultiRoot(step3Sum, true), correctRelease);
         Debug.LogFormat("[Ultra Digital Root #{0}] ==Answer==", moduleId);
         Debug.LogFormat("[Ultra Digital Root #{0}] Hold the {1} button in reading order when the total number of seconds remaining contains {2} and release it when it contains {3}", moduleId, posNames[correctBtn], correctHold, correctRelease);
+    }
+
+    private bool ContainsAny(string item, char[] items)
+    {
+        foreach (char i in item)
+        {
+            if (items.Contains(i))
+                return true;
+        }
+
+        return false;
     }
 
     private bool IsTimeOfDayPresent()
