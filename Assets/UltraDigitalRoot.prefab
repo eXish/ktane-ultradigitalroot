@@ -3694,7 +3694,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleType: ultraDigitalRootModule
   ModuleDisplayName: Ultra Digital Root
-  RequiresTimerVisibility: 0
+  RequiresTimerVisibility: 1
 --- !u!114 &114245814139330086
 MonoBehaviour:
   m_ObjectHideFlags: 1

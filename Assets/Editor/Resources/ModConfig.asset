@@ -25,11 +25,11 @@ MonoBehaviour:
     PDF: https://ktane.timwi.de/PDF/Ultra%20Digital%20Root.pdf
 
 
-    Ultra Digital Root (ultraDigitalRootModule) v1.0.1
+    Ultra Digital Root (ultraDigitalRootModule) v1.0.2
 
     Module and Concept by eXish
 
     Twitch Plays supported'
-  version: 1.0.1
+  version: 1.0.2
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 2fef9758395b8e04eb19ff23a87838e8, type: 3}
