@@ -289,7 +289,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
         Debug.LogFormat("[Ultra Digital Root #{0}] This results in the 4-digit binary number: {1}", moduleId, step2Binary);
         Debug.LogFormat("[Ultra Digital Root #{0}] The position that has a different digit in the binary numbers is: {1}", moduleId, correctBtn + 1);
         Debug.LogFormat("[Ultra Digital Root #{0}] ==Step 3==", moduleId);
-        Debug.LogFormat("[Ultra Digital Root #{0}] Sum of sum from step 1 and step 1 and 2's binary numbers converted to decimal ({1} and {2} respectively) is: {3}", moduleId, Convert.ToInt32(step1Binary, 2), Convert.ToInt32(step2Binary, 2), step3Sum);
+        Debug.LogFormat("[Ultra Digital Root #{0}] Sum of step 1's sum and step 1 and 2's binary numbers converted to decimal ({1} and {2} respectively) is: {3}", moduleId, Convert.ToInt32(step1Binary, 2), Convert.ToInt32(step2Binary, 2), step3Sum);
         Debug.LogFormat("[Ultra Digital Root #{0}] Sum's additive digital root ({1}) + sum's additive persistence ({2}) is: {3}", moduleId, AddRoot(step3Sum, false), AddRoot(step3Sum, true), correctHold);
         Debug.LogFormat("[Ultra Digital Root #{0}] Sum's multiplicative digital root ({1}) + sum's multiplicative persistence ({2}) is: {3}", moduleId, MultiRoot(step3Sum, false), MultiRoot(step3Sum, true), correctRelease);
         Debug.LogFormat("[Ultra Digital Root #{0}] ==Answer==", moduleId);
