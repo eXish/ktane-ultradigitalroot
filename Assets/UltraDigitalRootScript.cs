@@ -443,7 +443,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
 
     //twitch plays
     #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"!{0} hold <btn> on <##> [Holds the specified button when the number of seconds remaining is '##'] | !{0} release <btn> at <##> [Releases the specified button when the number of seconds remaining is '##'] | Valid buttons are 1-4 in reading order";
+    private readonly string TwitchHelpMessage = @"!{0} hold <btn> on <##> [Holds the specified button when the number of seconds remaining is '##'] | !{0} release at <##> [Releases the held button when the number of seconds remaining is '##'] | Valid buttons are 1-4 in reading order";
     bool ZenModeActive;
     #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
@@ -467,6 +467,11 @@ public class UltraDigitalRootScript : MonoBehaviour {
                         {
                             if (temp > -1)
                             {
+                                if (held)
+                                {
+                                    yield return "sendtochaterror A button is already being held!";
+                                    yield break;
+                                }
                                 var music = false;
                                 if (ZenModeActive)
                                 {
@@ -539,87 +544,67 @@ public class UltraDigitalRootScript : MonoBehaviour {
         if (Regex.IsMatch(parameters[0], @"^\s*release\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
             yield return null;
-            if (parameters.Length > 4)
+            if (parameters.Length > 3)
             {
                 yield return "sendtochaterror Too many parameters!";
             }
-            else if (parameters.Length == 4)
+            else if (parameters.Length == 3)
             {
-                if (parameters[1].EqualsAny("1", "2", "3", "4"))
+                if (parameters[1].ToLower().Equals("at"))
                 {
-                    if (parameters[2].ToLower().Equals("at"))
+                    int temp = 0;
+                    if (int.TryParse(parameters[2], out temp))
                     {
-                        int temp = 0;
-                        if (int.TryParse(parameters[3], out temp))
+                        if (temp > -1)
                         {
-                            if (temp > -1)
+                            if (!held)
                             {
-                                var music = false;
-                                if (ZenModeActive)
-                                {
-                                    if (temp - (int)bomb.GetTime() > 15) music = true;
-                                }
-                                else
-                                {
-                                    if ((int)bomb.GetTime() - temp > 15) music = true;
-                                }
-                                if (music) yield return "waiting music";
-                                while ((int)bomb.GetTime() != temp) { yield return "trycancel"; }
-                                if (music) yield return "end waiting music";
-                                buttons[int.Parse(parameters[1]) - 1].OnInteractEnded();
+                                yield return "sendtochaterror A button is not currently being held!";
+                                yield break;
+                            }
+                            var music = false;
+                            if (ZenModeActive)
+                            {
+                                if (temp - (int)bomb.GetTime() > 15) music = true;
                             }
                             else
                             {
-                                yield return "sendtochaterror The specified number of seconds '" + parameters[3] + "' is less than 0!";
+                                if ((int)bomb.GetTime() - temp > 15) music = true;
                             }
+                            if (music) yield return "waiting music";
+                            while ((int)bomb.GetTime() != temp) { yield return "trycancel"; }
+                            if (music) yield return "end waiting music";
+                            buttons[beingHeld].OnInteractEnded();
                         }
                         else
                         {
-                            yield return "sendtochaterror!f The specified number of seconds '" + parameters[3] + "' is invalid!";
+                            yield return "sendtochaterror The specified number of seconds '" + parameters[2] + "' is less than 0!";
                         }
                     }
                     else
                     {
-                        yield return "sendtochaterror!f The specified parameter '" + parameters[2] + "' is invalid! Expected 'at'!";
+                        yield return "sendtochaterror!f The specified number of seconds '" + parameters[2] + "' is invalid!";
                     }
                 }
                 else
                 {
-                    yield return "sendtochaterror!f The specified button '" + parameters[1] + "' is invalid!";
-                }
-            }
-            else if (parameters.Length == 3)
-            {
-                if (parameters[1].EqualsAny("1", "2", "3", "4"))
-                {
-                    if (parameters[2].ToLower().Equals("at"))
-                    {
-                        yield return "sendtochaterror Please specify a number of seconds to release the button at!";
-                    }
-                    else
-                    {
-                        yield return "sendtochaterror!f The specified parameter '" + parameters[2] + "' is invalid! Expected 'at'!";
-                    }
-                }
-                else
-                {
-                    yield return "sendtochaterror!f The specified button '" + parameters[1] + "' is invalid!";
+                    yield return "sendtochaterror!f The specified parameter '" + parameters[1] + "' is invalid! Expected 'at'!";
                 }
             }
             else if (parameters.Length == 2)
             {
-                if (parameters[1].EqualsAny("1", "2", "3", "4"))
+                if (parameters[1].ToLower().Equals("at"))
                 {
-                    yield return "sendtochaterror Please specify the word 'at' and a number of seconds to release the button at!";
+                    yield return "sendtochaterror Please specify a number of seconds to release the button at!";
                 }
                 else
                 {
-                    yield return "sendtochaterror!f The specified button '" + parameters[1] + "' is invalid!";
+                    yield return "sendtochaterror!f The specified parameter '" + parameters[1] + "' is invalid! Expected 'at'!";
                 }
             }
             else if (parameters.Length == 1)
             {
-                yield return "sendtochaterror Please specify a button, the word 'at', and a number of seconds to release the button at!";
+                yield return "sendtochaterror Please specify the word 'at' and a number of seconds to release the button at!";
             }
             yield break;
         }
