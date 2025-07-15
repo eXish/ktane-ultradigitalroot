@@ -348,7 +348,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
         int ct = 0;
         for (int i = 0; i < 4; i++)
         {
-            if (btnRends[i].material.name == "red")
+            if (btnRends[i].material.name.Replace(" (Instance)", "") == "red")
                 ct++;
         }
         return ct;
@@ -443,7 +443,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
 
     //twitch plays
     #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"!{0} hold <btn> on <##> [Holds the specified button when the number of seconds remaining is '##'] | !{0} release at <##> [Releases the held button when the number of seconds remaining is '##'] | Valid buttons are 1-4 in reading order";
+    private readonly string TwitchHelpMessage = @"!{0} hold <btn> at/on <##> [Holds the specified button when the number of seconds remaining is '##'] | !{0} release at/on <##> [Releases the held button when the number of seconds remaining is '##'] | Valid buttons are 1-4 in reading order";
     bool ZenModeActive;
     #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
@@ -460,7 +460,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
             {
                 if (parameters[1].EqualsAny("1", "2", "3", "4"))
                 {
-                    if (parameters[2].ToLower().Equals("on"))
+                    if (parameters[2].ToLower().EqualsAny("at", "on"))
                     {
                         int temp = 0;
                         if (int.TryParse(parameters[3], out temp))
@@ -498,7 +498,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
                     }
                     else
                     {
-                        yield return "sendtochaterror!f The specified parameter '" + parameters[2] + "' is invalid! Expected 'on'!";
+                        yield return "sendtochaterror!f The specified parameter '" + parameters[2] + "' is invalid! Expected 'at' or 'on'!";
                     }
                 }
                 else
@@ -510,13 +510,13 @@ public class UltraDigitalRootScript : MonoBehaviour {
             {
                 if (parameters[1].EqualsAny("1", "2", "3", "4"))
                 {
-                    if (parameters[2].ToLower().Equals("on"))
+                    if (parameters[2].ToLower().EqualsAny("at", "on"))
                     {
-                        yield return "sendtochaterror Please specify a number of seconds to hold the button on!";
+                        yield return "sendtochaterror Please specify a number of seconds to hold the button at/on!";
                     }
                     else
                     {
-                        yield return "sendtochaterror!f The specified parameter '" + parameters[2] + "' is invalid! Expected 'on'!";
+                        yield return "sendtochaterror!f The specified parameter '" + parameters[2] + "' is invalid! Expected 'at' or 'on'!";
                     }
                 }
                 else
@@ -537,7 +537,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
             }
             else if (parameters.Length == 1)
             {
-                yield return "sendtochaterror Please specify a button, the word 'on', and a number of seconds to hold the button on!";
+                yield return "sendtochaterror Please specify a button, the word 'at' or 'on', and a number of seconds to hold the button at/on!";
             }
             yield break;
         }
@@ -595,7 +595,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
             {
                 if (parameters[1].ToLower().Equals("at"))
                 {
-                    yield return "sendtochaterror Please specify a number of seconds to release the button at!";
+                    yield return "sendtochaterror Please specify a number of seconds to release the button at/on!";
                 }
                 else
                 {
