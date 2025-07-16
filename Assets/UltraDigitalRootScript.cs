@@ -528,7 +528,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
             {
                 if (parameters[1].EqualsAny("1", "2", "3", "4"))
                 {
-                    yield return "sendtochaterror Please specify the word 'on' and a number of seconds to hold the button on!";
+                    yield return "sendtochaterror Please specify the word 'at' or 'on' and a number of seconds to hold the button at/on!";
                 }
                 else
                 {
@@ -550,7 +550,7 @@ public class UltraDigitalRootScript : MonoBehaviour {
             }
             else if (parameters.Length == 3)
             {
-                if (parameters[1].ToLower().Equals("at"))
+                if (parameters[1].ToLower().EqualsAny("at", "on"))
                 {
                     int temp = 0;
                     if (int.TryParse(parameters[2], out temp))
@@ -588,23 +588,23 @@ public class UltraDigitalRootScript : MonoBehaviour {
                 }
                 else
                 {
-                    yield return "sendtochaterror!f The specified parameter '" + parameters[1] + "' is invalid! Expected 'at'!";
+                    yield return "sendtochaterror!f The specified parameter '" + parameters[1] + "' is invalid! Expected 'at' or 'on'!";
                 }
             }
             else if (parameters.Length == 2)
             {
-                if (parameters[1].ToLower().Equals("at"))
+                if (parameters[1].ToLower().EqualsAny("at", "on"))
                 {
                     yield return "sendtochaterror Please specify a number of seconds to release the button at/on!";
                 }
                 else
                 {
-                    yield return "sendtochaterror!f The specified parameter '" + parameters[1] + "' is invalid! Expected 'at'!";
+                    yield return "sendtochaterror!f The specified parameter '" + parameters[1] + "' is invalid! Expected 'at' or 'on'!";
                 }
             }
             else if (parameters.Length == 1)
             {
-                yield return "sendtochaterror Please specify the word 'at' and a number of seconds to release the button at!";
+                yield return "sendtochaterror Please specify the word 'at' or 'on' and a number of seconds to release the button at/on!";
             }
             yield break;
         }
